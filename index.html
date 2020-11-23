@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bad+Script">
+        <link rel="shortcut icon" href="assets/favicon.ico">
+        <link rel = "stylesheet" href = "styles.css">
+        <link rel="icon" type="image/gif" href="assets/animated_favicon.gif">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto:wght@300&display=swap" rel="stylesheet">
+        <link href='https://css.gg/radio-check.css' rel='stylesheet'>
+    </head>
+    <style>
+        .is-open {
+            display: none;
+        }
+    </style>
+    <body>
+        <div class = "container">
+            <div class = "title">
+                <h1>My todo List  <i id="pensil" class="fas fa-pencil-alt"></i></h1>
+            </div>
+            <form  class = "addTask" onsubmit="return addTask(event)">
+                <input class = "addTask-input" id = "addToDo" type="text" placeholder="Добавить список" >
+            </form>
+            <ul class = "all-tasks">
+            </ul>
+            <div class = "buttons">
+                <button class = "button-secondary" onclick="clearAllTasks()"> Clear </button>
+                <button class = "button-secondary" onclick="openTips()"> Tips </button>
+                <button class = "button-primary" onclick="saveAllTasks()"> Save </button>
+            </div>
+            <ul class = "all-saved-tasks">
+            </ul>
+            <ul class="tips is-open">
+                <li>Чтобы спрятать или показать поле ввода, кликните на карандаш</li>
+                <li>Для добавления списка дел напишите текст в поле ввода и нажмите Ввод</li>
+                <li>Чтобы удалить один пункт, наведите на него и нажмите на значок корзины</li>
+                <li>Чтобы удалить все списки дел, нажмите "Очистить"</li>
+                <li>Нажмите "Сохранить", чтобы сохранить список дел на потом</li>
+            </ul>
+        </div>
+    </body>
+    <script>
+        let storage = [];
+        let url = " https://todo-hapi-postgres.herokuapp.com/";
+        window.onload = function () {
+            fetch(url).then(function(response){
+                if(response.ok){
+                    response.json().then((data)=>{
+                        var ul = document.getElementsByClassName("all-tasks");
+                        storage = data;
+                        console.log(storage);
+                        data.forEach((element)=>{
+                            var li = document.createElement("label");
+                            var new_task = element.title;
+                            newTask(new_task,element);
+                        })
+                    })
+                }
+            })
+        }
+        function addTask(e){
+            var ul = document.getElementsByClassName("all-tasks");
+            var new_task = document.getElementById("addToDo").value;
+            let url = " https://todo-hapi-postgres.herokuapp.com/";
+            let task_Json = {
+                title : new_task
+            };
+            fetch(url, {
+                method: "Post",
+                body:  JSON.stringify(task_Json)
+            }).then((response)=>{
+                if(response.ok){
+                    response.json().then((element)=> {
+                        newTask(new_task,element);
+                    })
+                }else {
+                    alert("Network error, couldn't add task.")
+                }
+            })
+            // li.className = 'task';
+            // li.appendChild(document.createTextNode(new_task + " "));
+            // li.appendChild( document.createElement('i'));
+            // var icon = li.getElementsByTagName('i');
+            // icon[0].setAttribute("class","fas fa-trash-alt");
+            // icon[0].setAttribute('onclick',"deleteTask(this)");
+            // ul[0].append(li);
+            // e.preventDefault();
+            return false;
+        }
+
+        function deleteTask(e) {
+            var li = e.parentNode;
+            let id = li.getAttribute("id")
+            li.remove();
+            fetch(url+id,{
+                method:'DELETE'
+            }).then((response)=>{
+                if (response.ok){
+                    alert("success!")
+                }
+            })
+        }
+        function doneTask(event) {
+          console.log(event.parentNode.getAttribute("id"));
+            let id = event.parentNode.getAttribute("id");
+            console.log(event.checked);
+            if(!event.checked){
+                fetch(url + id,{
+                    method: 'PATCH',
+                    body: JSON.stringify({
+                        completed: false
+                    })
+                }).then((response)=>{
+                    if (response.ok){
+                        alert("completed: false");
+                    }else{
+                        console.log(response);
+                    }
+                });
+            }else {
+                fetch(url + id, {
+                    method: 'PATCH',
+                    body: JSON.stringify({
+                        completed: true
+                    })
+                }).then((response) => {
+                    if (response.ok) {
+                        alert("completed: true");
+                    } else {
+                        console.log(response);
+                    }
+                });
+            }
+        }
+        function clearAllTasks() {
+            var ul = document.getElementsByClassName("all-tasks");
+            let ulArray = Array.from( ul[0].children);
+            let num = 0;
+            ulArray.forEach((element)=> {
+                let id = element.getAttribute("id");
+                fetch(url + id, {
+                    method: "DELETE"
+                }).then((response) => {
+                    if (response.ok) {
+                        num++;
+                    }
+                }).then(() => {
+                    if (num == ulArray.length) {
+                        alert("success delete all elements");
+                        ul[0].replaceChildren();
+                    }
+                });
+            })
+            // ul[0].getElementsByTagName("li").remove();
+            // ul[0].remove();
+        }
+        function saveAllTasks() {
+            var ul = document.getElementsByClassName("all-tasks");
+            var new_ul = document.getElementsByClassName("all-saved-tasks");
+            let li = ul[0].cloneNode(true).getElementsByTagName("label");
+            var array =  Array.prototype.slice.call(li);
+            array.forEach((li)=>{
+                 li.getElementsByTagName("i")[0].remove();
+                new_ul[0].append(li);
+            });
+            ul[0].replaceChildren();
+        }
+        function openTips() {
+            var tips = document.getElementsByClassName("tips")[0];
+            tips.classList.toggle("is-open")
+        }
+        function newTask(new_task,element){
+            var ul = document.getElementsByClassName("all-tasks");
+            var li = document.createElement("label");
+            li.className = 'task';
+            li.appendChild(document.createElement('input'));
+            li.appendChild( document.createElement('span'));
+            li.appendChild(document.createTextNode(new_task + " "));
+            li.appendChild( document.createElement('i'));
+            var icon = li.getElementsByTagName('i');
+            let check = li.getElementsByTagName('input');
+            let span = li.getElementsByTagName('span');
+            check[0].setAttribute("type","checkbox");
+            check[0].setAttribute("class","task-checkbox");
+            check[0].setAttribute("onclick", "doneTask(this)");
+            icon[0].setAttribute("class","fas fa-trash-alt");
+            icon[0].setAttribute("onclick","deleteTask(this)");
+            span[0].setAttribute("class","checkmark");
+            li.setAttribute("id", element.id);
+            if (element.completed){
+                check[0].checked = true;
+            }
+            ul[0].append(li);
+        }
+    </script>
+</html>
