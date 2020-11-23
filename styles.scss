@@ -1,0 +1,162 @@
+$light-green: #b8f0b6;
+$dark-green: #243b23;
+$green: #448610;
+$main-place: #ffffff;
+$dark-grey: #3F403F;
+$light-grey: #CCCFCC;
+$white: #ffffff;
+body {
+  background-color: $light-green;
+  margin: 0 0;
+}
+.title {
+  color: $dark-green;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+}
+.container {
+  font-family: 'Roboto', sans-serif ;
+  height: 65vh;
+  margin: 100px 10%;
+  background-color: $main-place;
+  border-radius: 10px;
+}
+.addTask{
+  margin: 30px 10px;
+  &-input {
+    border:1px solid #243b23;
+    border-radius: 20px;
+    height: 30px;
+    width: 200px;
+  }
+}
+.buttons{
+  margin: 30px 10px;
+}
+.button{
+  &-primary{
+    color: $white;
+    font-weight: 600;
+    padding: 5px 25px ;
+    border-radius: 20px;
+    background-color: $green;
+    border: 2px solid $green;
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+      color: $dark-grey;
+      background-color: $main-place;
+    }
+  }
+  &-secondary{
+    color: $dark-grey;
+    font-weight: 600;
+    padding: 5px 25px;
+    border-radius: 20px;
+    background-color: $main-place;
+    border: 2px solid $green;
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+      color: $white;
+      background-color: $green;
+    }
+  }
+}
+li  {
+  list-style-type: none;
+}
+.task {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  &-checkbox {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+}
+
+
+//.task-checkbox:checked+label::before {
+//  border-color: #0b76ef;
+//  background-color: #0b76ef;
+//  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+//}
+//.task-checkbox+span::before {
+//  content: '';
+//  display: inline-block;
+//  width: 1em;
+//  height: 1em;
+//  flex-shrink: 0;
+//  flex-grow: 0;
+//  border: 1px solid #adb5bd;
+//  border-radius: 0.25em;
+//  margin-right: 0.5em;
+//  background-repeat: no-repeat;
+//  background-position: center center;
+//  background-size: 50% 50%;
+//}
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+.task:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.task input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.task .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  text-decoration:line-through;
+}
+.task input:checked ~ .checkmark {
+  background-color: #2196F3;
+  text-decoration:line-through;
+}
+.task input:checked > .task{
+    text-decoration: line-through;
+}
+.task-checkbox:checked ~ .task{
+  text-decoration:line-through;
+}
+input:checked {
+  text-decoration:line-through;
+}
+.task:has(input:checked) {
+  text-decoration: line-through;
+}
