@@ -45,17 +45,12 @@
         </div>
     </body>
     <script>
-        let storage = [];
         let url = " https://todo-hapi-postgres.herokuapp.com/";
         window.onload = function () {
             fetch(url).then(function(response){
                 if(response.ok){
                     response.json().then((data)=>{
-                        var ul = document.getElementsByClassName("all-tasks");
-                        storage = data;
-                        console.log(storage);
                         data.forEach((element)=>{
-                            var li = document.createElement("label");
                             var new_task = element.title;
                             newTask(new_task,element);
                         })
@@ -64,9 +59,7 @@
             })
         }
         function addTask(e){
-            var ul = document.getElementsByClassName("all-tasks");
             var new_task = document.getElementById("addToDo").value;
-            let url = " https://todo-hapi-postgres.herokuapp.com/";
             let task_Json = {
                 title : new_task
             };
@@ -82,14 +75,6 @@
                     alert("Network error, couldn't add task.")
                 }
             })
-            // li.className = 'task';
-            // li.appendChild(document.createTextNode(new_task + " "));
-            // li.appendChild( document.createElement('i'));
-            // var icon = li.getElementsByTagName('i');
-            // icon[0].setAttribute("class","fas fa-trash-alt");
-            // icon[0].setAttribute('onclick',"deleteTask(this)");
-            // ul[0].append(li);
-            // e.preventDefault();
             return false;
         }
 
@@ -106,9 +91,7 @@
             })
         }
         function doneTask(event) {
-          console.log(event.parentNode.getAttribute("id"));
             let id = event.parentNode.getAttribute("id");
-            console.log(event.checked);
             if(!event.checked){
                 fetch(url + id,{
                     method: 'PATCH',
@@ -156,8 +139,6 @@
                     }
                 });
             })
-            // ul[0].getElementsByTagName("li").remove();
-            // ul[0].remove();
         }
         function saveAllTasks() {
             var ul = document.getElementsByClassName("all-tasks");
