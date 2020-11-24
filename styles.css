@@ -2,6 +2,10 @@ body {
   background-color: #b8f0b6;
   margin: 0 0; }
 
+html {
+  position: relative;
+  overflow: hidden; }
+
 .title {
   color: #243b23;
   text-align: center;
@@ -10,10 +14,11 @@ body {
 
 .container {
   font-family: "Roboto", sans-serif;
-  height: 65vh;
-  margin: 100px 10%;
+  height: 80vh;
+  margin: 60px 10%;
   background-color: #ffffff;
-  border-radius: 10px; }
+  border-radius: 10px;
+  box-shadow: 1px 1px 5px #CECDCD; }
 
 .addTask {
   margin: 30px 10px; }
@@ -108,16 +113,28 @@ li {
   background-color: #2196F3;
   text-decoration: line-through; }
 
-.task input:checked > .task {
-  text-decoration: line-through; }
+.round-1 {
+  position: absolute;
+  width: 80%;
+  height: 90%;
+  background-color: #F1FBF1;
+  z-index: -1;
+  border-radius: 100%;
+  margin-bottom: -20%;
+  margin-left: -20%;
+  bottom: 0;
+  left: 0; }
 
-.task-checkbox:checked ~ .task {
-  text-decoration: line-through; }
-
-input:checked {
-  text-decoration: line-through; }
-
-.task:has(input:checked) {
-  text-decoration: line-through; }
+.round-2 {
+  position: absolute;
+  width: 50%;
+  height: 70%;
+  background-color: #F1FBF1;
+  right: 0;
+  top: 0;
+  z-index: -1;
+  border-radius: 40%;
+  margin-top: -10%;
+  margin-right: -10%; }
 
 /*# sourceMappingURL=styles.css.map */

@@ -1,13 +1,19 @@
 $light-green: #b8f0b6;
 $dark-green: #243b23;
 $green: #448610;
+$white-green: #F1FBF1;
 $main-place: #ffffff;
 $dark-grey: #3F403F;
 $light-grey: #CCCFCC;
 $white: #ffffff;
+$box-shadow: #CECDCD;
 body {
   background-color: $light-green;
   margin: 0 0;
+}
+html {
+  position: relative;
+  overflow: hidden;
 }
 .title {
   color: $dark-green;
@@ -17,10 +23,11 @@ body {
 }
 .container {
   font-family: 'Roboto', sans-serif ;
-  height: 65vh;
-  margin: 100px 10%;
+  height: 80vh;
+  margin: 60px 10%;
   background-color: $main-place;
   border-radius: 10px;
+  box-shadow: 1px 1px 5px $box-shadow;
 }
 .addTask{
   margin: 30px 10px;
@@ -88,27 +95,6 @@ li  {
   }
 
 }
-
-
-//.task-checkbox:checked+label::before {
-//  border-color: #0b76ef;
-//  background-color: #0b76ef;
-//  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
-//}
-//.task-checkbox+span::before {
-//  content: '';
-//  display: inline-block;
-//  width: 1em;
-//  height: 1em;
-//  flex-shrink: 0;
-//  flex-grow: 0;
-//  border: 1px solid #adb5bd;
-//  border-radius: 0.25em;
-//  margin-right: 0.5em;
-//  background-repeat: no-repeat;
-//  background-position: center center;
-//  background-size: 50% 50%;
-//}
 .checkmark {
   position: absolute;
   top: 0;
@@ -148,15 +134,39 @@ li  {
   background-color: #2196F3;
   text-decoration:line-through;
 }
-.task input:checked > .task{
-    text-decoration: line-through;
+//.task input:checked > .task{
+//    text-decoration: line-through;
+//}
+//.task-checkbox:checked ~ .task{
+//  text-decoration:line-through;
+//}
+//input:checked {
+//  text-decoration:line-through;
+//}
+//.task:has(input:checked) {
+//  text-decoration: line-through;
+//}
+.round-1 {
+  position: absolute;
+  width: 80%;
+  height: 90%;
+  background-color: #F1FBF1;
+  z-index: -1;
+  border-radius: 100%;
+  margin-bottom: -20%;
+  margin-left: -20%;
+  bottom: 0;
+  left: 0;
 }
-.task-checkbox:checked ~ .task{
-  text-decoration:line-through;
-}
-input:checked {
-  text-decoration:line-through;
-}
-.task:has(input:checked) {
-  text-decoration: line-through;
+.round-2 {
+  position: absolute;
+  width: 50%;
+  height: 70%;
+  background-color: #F1FBF1;
+  right: 0;
+  top: 0;
+  z-index: -1;
+  border-radius: 40%;
+  margin-top: -10%;
+  margin-right: -10%;
 }
